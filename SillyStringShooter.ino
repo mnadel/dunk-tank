@@ -16,13 +16,13 @@ const int DEACTIVATE_ANGLE = 0;
 IRrecv irrecv(IRRECV_PIN);
 decode_results results;
 
+// potentiometer
+const int POT_PIN = 0;
+
 // state management
 const int KEYPRESS_THRESHOLD_MS = 750;
 long lastReceiveTime;
 int lastValueReceived = -1;
-
-// math challenge
-const int ANSWER = 14;
 
 void setup()
 {
@@ -36,8 +36,8 @@ void setup()
   servo.write(DEACTIVATE_ANGLE);
 }
 
-unsigned int translateIR() {
-  switch (results.value)
+unsigned int translateIR(long irCode) {
+  switch (irCode)
   {
     case 0xFF6897: return 0;
     case 0xFF30CF: return 1;
@@ -58,27 +58,34 @@ void loop()
 {
   digitalWrite(LED_BUILTIN, LOW);
 
+  int answer = map(analogRead(POT_PIN), 0, 1023, 0, 25);
+
+  if (millis() % 5000 == 0) {
+    Serial.print("answer=");
+    Serial.println(answer);
+  }
+  
   if (irrecv.decode(&results))
   {
     long receiveTime = millis();
     long timeSinceLastPress = receiveTime - lastReceiveTime;
-    int currValue = translateIR();
+    int currValue = translateIR(results.value);
     
     if (currValue >= 0) {
-      Serial.print("pressed=");
+      Serial.print("key=");
       Serial.println(currValue);
       
       if (timeSinceLastPress <= KEYPRESS_THRESHOLD_MS) {
-        Serial.print("adding prev=");
-        Serial.println(lastValueReceived);
+        Serial.print("+");
+        Serial.println(lastValueReceived*10);
         
         currValue = lastValueReceived*10 + currValue;
       }
 
-      Serial.print("current=");
+      Serial.print("val=");
       Serial.println(currValue);
 
-      if (currValue == ANSWER) {
+      if (currValue == answer) {
         digitalWrite(LED_BUILTIN, HIGH);
         Serial.println("triggering");
   
