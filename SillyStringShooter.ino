@@ -27,18 +27,27 @@ long prevDist;
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("starting");
+  
   servo.attach(SERVO_PIN);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
   currDist = NewPing::convert_in(sonar.ping_median(PINGS));
 
   acquired = searching && currDist <= ACQUIRE_DIST;
-  searching = currDist > REACQUIRE_DIST;
+  searching = currDist >= REACQUIRE_DIST;
 
-  log();
+  log(currDist, searching);
+
+  if (searching) {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
 
   if (acquired) {
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("triggering");
     servo.write(ACTIVATE_ANGLE);
     delay(ACTIVATION_DURATION);
     servo.write(DEACTIVATE_ANGLE);
@@ -47,11 +56,9 @@ void loop() {
   prevDist = currDist;
 }
 
-void log() {
+void log(long dist, bool searching) {
   Serial.print("dist=");
-  Serial.print(currDist);
-  Serial.print(", acq=");
-  Serial.print(acquired ? "1" : "0");
+  Serial.print(dist);
   Serial.print(", srch=");
   Serial.println(searching ? "1" : "0");
 }
