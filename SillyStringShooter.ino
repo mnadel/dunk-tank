@@ -1,6 +1,7 @@
 #include <IRremote.h>
 #include <IRremoteInt.h>
 #include <Servo.h>
+#include <limits.h>
 
 // arduino
 const int SERVO_PIN = 9;
@@ -16,11 +17,10 @@ const int DEACTIVATE_ANGLE = 0;
 IRrecv irrecv(IRRECV_PIN);
 decode_results results;
 
-// potentiometer
-const int POT_PIN = 0;
-
 // state management
 const int KEYPRESS_THRESHOLD_MS = 750;
+const int KEYPRESS_EQ = INT_MAX;
+int answer = 42;
 long lastReceiveTime;
 int lastValueReceived = -1;
 
@@ -49,6 +49,7 @@ unsigned int translateIR(long irCode) {
     case 0xFF42BD: return 7;
     case 0xFF4AB5: return 8;
     case 0xFF52AD: return 9;
+    case 0xFF9867: return KEYPRESS_EQ;
   }
 
   return -1;
@@ -57,21 +58,19 @@ unsigned int translateIR(long irCode) {
 void loop()
 {
   digitalWrite(LED_BUILTIN, LOW);
-
-  int answer = map(analogRead(POT_PIN), 0, 1023, 0, 25);
-
-  if (millis() % 5000 == 0) {
-    Serial.print("answer=");
-    Serial.println(answer);
-  }
   
   if (irrecv.decode(&results))
   {
     long receiveTime = millis();
     long timeSinceLastPress = receiveTime - lastReceiveTime;
     int currValue = translateIR(results.value);
-    
-    if (currValue >= 0) {
+
+    if (currValue == KEYPRESS_EQ) {
+      answer = lastValueReceived;
+      Serial.print("*** ANSWER=");
+      Serial.print(answer);
+      Serial.println(" ***");
+    } else if (currValue >= 0) {
       Serial.print("key=");
       Serial.println(currValue);
       
