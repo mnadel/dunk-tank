@@ -14,7 +14,7 @@ const int REACQUIRE_DIST = 24;
 const int ACTIVATE_ANGLE = 180;
 const int ACTIVATION_DURATION = 750;
 const int DEACTIVATE_ANGLE = 0;
-const int PINGS = 10;
+const int PINGS = 7;
 
 // state
 NewPing sonar(TRIGGER_PIN, ECHO_PIN);
