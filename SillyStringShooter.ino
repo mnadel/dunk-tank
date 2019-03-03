@@ -9,9 +9,9 @@ const int IRRECV_PIN = 11;
 
 // servo
 Servo servo;
-const int ACTIVATE_ANGLE = 180;
+const int ACTIVATE_ANGLE = 0;
 const int ACTIVATION_DURATION = 750;
-const int DEACTIVATE_ANGLE = 0;
+const int DEACTIVATE_ANGLE = 180;
 
 // infrared receiver
 IRrecv irrecv(IRRECV_PIN);
@@ -68,8 +68,7 @@ void loop()
     if (currValue == KEYPRESS_EQ) {
       answer = lastValueReceived;
       Serial.print("*** ANSWER=");
-      Serial.print(answer);
-      Serial.println(" ***");
+      Serial.println(answer);
     } else if (currValue >= 0) {
       Serial.print("key=");
       Serial.println(currValue);
