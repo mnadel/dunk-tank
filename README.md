@@ -20,4 +20,4 @@ Then, ask for two volunteers. Give one the remote, and put the other in front of
 
 Set an answer by entering a value then pressing the `EQ` button. Next, ask the remote-holder a math problem whose answer is the value you just entered.
 
-If they key in the right answer, they get to quirt their friend!
+If they key in the right answer, they get to squirt their friend!
