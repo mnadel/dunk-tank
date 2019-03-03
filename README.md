@@ -16,8 +16,10 @@ First, affix the servo to a spray bottle:
 
 ![img](https://user-images.githubusercontent.com/1819618/53690906-e02cb500-3d38-11e9-8cdd-c452e97a0b04.png)
 
-Then, ask for two volunteers. Give one the remote, and put the other in front of the spray bottle.
+Next, set an answer by entering a value then pressing the `EQ` button.
 
-Set an answer by entering a value then pressing the `EQ` button. Next, ask the remote-holder a math problem whose answer is the value you just entered.
+Now, ask for two volunteers. Give one the remote, and put the other in front of the spray bottle.
+
+Finally, ask the remote-holder a math problem whose answer is the value you just entered.
 
 If they key in the right answer, they get to squirt their friend!
